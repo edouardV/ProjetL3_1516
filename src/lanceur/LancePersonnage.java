@@ -74,6 +74,11 @@ public class LancePersonnage {
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
+			/* le type de personnage aléatoire */
+			/* si on choisit le type en premier au random, on peut remplir les autres stats comme on le veut 
+			 * et donc faire l'assassin de daniel */
+			caracts.put(Caracteristique.TYPE_PERSO, 
+					Calculs.valeurCaracAleatoire(Caracteristique.TYPE_PERSO));
 			
 			Point position = Calculs.positionAleatoireArene();
 			

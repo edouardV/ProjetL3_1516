@@ -21,7 +21,12 @@ public enum Caracteristique {
 	/**
 	 * Initiative : definit l'ordre d'action des personnages lors d'un tour de jeu. 
 	 */
-	INITIATIVE("Initiative", "INIT", 0, 200, 50);
+	INITIATIVE("Initiative", "INIT", 0, 200, 50),
+	
+	/**
+	 * TYPE_PERSO : définit le type de personnage 
+	 */
+	TYPE_PERSO("Type_perso", "TYPE", 0, 1, 0);
 	
 	/**
 	 * Nom complet.
