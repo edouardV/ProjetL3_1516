@@ -77,8 +77,9 @@ public class LancePersonnage {
 			/* le type de personnage aléatoire */
 			/* si on choisit le type en premier au random, on peut remplir les autres stats comme on le veut 
 			 * et donc faire l'assassin de daniel */
-			caracts.put(Caracteristique.TYPE_PERSO, 
-					Calculs.valeurCaracAleatoire(Caracteristique.TYPE_PERSO));
+			/*caracts.put(Caracteristique.TYPE_PERSO, 
+					Calculs.valeurCaracAleatoire(Caracteristique.TYPE_PERSO));*/
+			caracts.put(Caracteristique.TYPE_PERSO, 3);
 			
 			Point position = Calculs.positionAleatoireArene();
 			

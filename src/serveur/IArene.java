@@ -152,6 +152,11 @@ public interface IArene extends Remote {
 	 * Gestion des interactions.
 	 **************************************************************************/
 
+	public boolean Soigner(int refRMI, int refRMI2) throws RemoteException;
+	
+	
+	public boolean jetePotion(int refRMI, int refPotion) throws RemoteException;
+	
 	/**
 	 * Execute le ramassage d'une potion par un personnage, si possible.
 	 * Le ramassage echoue si une action a deja ete executee ce tour par ce 

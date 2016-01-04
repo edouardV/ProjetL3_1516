@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import client.controle.Console;
 import logger.LoggerProjet;
+import serveur.Arene;
 import serveur.IArene;
 import serveur.element.Caracteristique;
 import serveur.element.Element;
@@ -158,5 +159,95 @@ public class StrategiePersonnage {
 				} // else 
 			} // else 
 		} // if
+		
+		/* type 2 : jeteur de potions */
+		if (caracts.get(Caracteristique.TYPE_PERSO) == 2)
+		{
+			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+				console.setPhrase("J'erre...");
+				arene.deplace(refRMI, 0); 
+				
+			} // if 
+			else {
+				int refCible = Calculs.chercheElementProche(position, voisins);
+				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+
+				Element elemPlusProche = arene.elementFromRef(refCible);
+
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+					// j'interagis directement
+					if(elemPlusProche instanceof Potion) { // potion
+						// ne pas ramasser 
+						console.setPhrase("Une potion ! Je suis sur que c'est un piège...");
+						arene.deplace(refRMI, 0);
+
+					} // if  
+					else { // personnage
+						// attaque
+						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+						arene.lanceAttaque(refRMI, refCible);
+					} // else 
+				} // if 
+				else { // si voisins, mais plus eloignes
+					// je vais vers le plus proche
+					console.setPhrase("il y a risque d'attaque. diversion potion " + elemPlusProche.getNom());
+					arene.jetePotion(refRMI, refCible);
+				} // else 
+			} // else 
+		} // if
+		
+		/* type 3 : soigneur */
+		if (caracts.get(Caracteristique.TYPE_PERSO) == 3) 
+		{
+			if (voisins.isEmpty()) { /* pas de voisin */
+				/* si le personnage a moins de 50 poins de vie */
+				if (caracts.get(Caracteristique.VIE) <= 50) {
+					console.setPhrase("je me soigne");
+					arene.Soigner(refRMI, refRMI);
+				} // if
+				else {
+					console.setPhrase("J'erre...");
+					arene.deplace(refRMI, 0);
+				} // else
+			} // if 
+			else {	/* il y a des voisins */
+				int refCible = Calculs.chercheElementProche(position, voisins);
+				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+
+				Element elemPlusProche = arene.elementFromRef(refCible);
+
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+					// j'interagis directement
+					if(elemPlusProche instanceof Potion) { // potion
+						// ne pas ramasser 
+						console.setPhrase("Une potion ! Je la bois ");
+						arene.ramassePotion(refRMI, refCible);
+					} // if  
+					else { // personnage
+						/* si le personnage a moins de 50 poins de vie */
+						if (caracts.get(Caracteristique.VIE) <= 50) {
+							console.setPhrase("je me soigne");
+							arene.Soigner(refRMI, refRMI);
+						} // if
+						else {
+							console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+							arene.lanceAttaque(refRMI, refCible);
+						} // else 
+					} // else 
+				} // if 
+				else { // si voisins, mais plus eloignes
+					/* si le personnage a moins de 50 poins de vie */
+					if (caracts.get(Caracteristique.VIE) <= 50) {
+						console.setPhrase("je me soigne");
+						arene.Soigner(refRMI, refRMI);
+					} // if
+					else {
+						console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+						arene.deplace(refRMI, refCible);
+					} // else
+				} // else 
+			} // else 
+		} // if
 	} // execute stratégie 	
+	
 } // class 

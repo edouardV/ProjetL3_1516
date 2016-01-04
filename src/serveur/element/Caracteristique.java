@@ -26,7 +26,7 @@ public enum Caracteristique {
 	/**
 	 * TYPE_PERSO : définit le type de personnage 
 	 */
-	TYPE_PERSO("Type_perso", "TYPE", 0, 1, 0);
+	TYPE_PERSO("Type_perso", "TYPE", 0, 3, 0);
 	
 	/**
 	 * Nom complet.

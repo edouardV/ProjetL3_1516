@@ -23,6 +23,8 @@ import serveur.element.Personnage;
 import serveur.element.Potion;
 import serveur.interaction.Deplacement;
 import serveur.interaction.Duel;
+import serveur.interaction.Soigner;
+import serveur.interaction.JeterPotion;
 import serveur.interaction.Ramassage;
 import serveur.vuelement.VueElement;
 import serveur.vuelement.VuePersonnage;
@@ -695,7 +697,82 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		
 		logElements();
 	}
+	
+	public boolean Soigner(int refRMI, int refRMI2) throws RemoteException {
+		boolean res = false;
+		
+		VuePersonnage client = personnages.get(refRMI);
+		VuePersonnage client2 = personnages.get(refRMI2);
+		
+		if (personnages.get(refRMI).isActionExecutee()) {
+			// si une action a deja ete executee
+			logActionDejaExecutee(refRMI);
+			
+		} // if
+		else {
+			// sinon, on tente de jouer l'interaction
+			IConsole console = consoleFromRef(refRMI);
+			IConsole console2 = consoleFromRef(refRMI2);
+			
+			int distance = Calculs.distanceChebyshev(personnages.get(refRMI).getPosition(), 
+					personnages.get(refRMI2).getPosition());
 
+			// on teste la distance entre les personnages
+			if (distance <= Constantes.DISTANCE_MIN_INTERACTION) {
+				Personnage pers = (Personnage) elementFromRef(refRMI);
+				Personnage pers2 = (Personnage) elementFromRef(refRMI2);
+				
+				// on teste que les deux personnages soient en vie
+				if (pers.estVivant() && pers2.estVivant()) {
+					console.log(Level.INFO, Constantes.nomClasse(this), 
+							"Je soigne " + nomRaccourciClient(refRMI2));
+					console2.log(Level.INFO, Constantes.nomClasse(this), 
+							"Je suis soigné par " + nomRaccourciClient(refRMI));
+					
+					logger.info(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+							" soigne " + nomRaccourciClient(console2.getRefRMI()));
+			
+					new Soigner(this, client, client2).interagit();
+					personnages.get(refRMI).executeAction();
+				} //if
+			} //if
+			
+		} //else 
+		
+		return res;
+	} // Soigner
+
+	public boolean jetePotion(int refRMI, int refPotion) throws RemoteException {
+		boolean res = false;
+		
+		VuePersonnage vuePersonnage = personnages.get(refRMI);
+		VuePotion vuePotion = potions.get(refPotion);
+		
+		if (vuePersonnage.isActionExecutee()) {
+			// si une action a deja ete executee
+			logActionDejaExecutee(refRMI);
+			
+		} else {
+			// sinon, on tente de jouer l'interaction
+			int distance = Calculs.distanceChebyshev(vuePersonnage.getPosition(), vuePotion.getPosition());
+			
+			// on teste la distance entre le personnage et la potion
+			if (distance <= Constantes.DISTANCE_MIN_INTERACTION) {
+				new JeterPotion(this, vuePersonnage, vuePotion).interagit();
+				personnages.get(refRMI).executeAction();
+				
+				res = true;
+			} else {
+				logger.warning(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+						" a tente d'interagir avec " + vuePotion.getElement().getNom() + 
+						", alors qu'il est trop eloigne !\nDistance = " + distance);
+			}
+		}
+		
+		return res;
+	}
+	
+	
 	@Override
 	public boolean ramassePotion(int refRMI, int refPotion) throws RemoteException {
 		boolean res = false;
