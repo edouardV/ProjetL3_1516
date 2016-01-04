@@ -111,6 +111,7 @@ public class StrategiePersonnage {
 			}
 		}
 	}
-
+	
+	public int retourne_cinq() {return 5;}
 	
 }
