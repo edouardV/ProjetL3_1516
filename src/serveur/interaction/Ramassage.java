@@ -2,6 +2,8 @@ package serveur.interaction;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 
 import serveur.Arene;
@@ -38,9 +40,19 @@ public class Ramassage extends Interaction<VuePotion> {
 				// caracteristiques de la potion
 				HashMap<Caracteristique, Integer> valeursPotion = defenseur.getElement().getCaracts();
 				
-				for(Caracteristique c : valeursPotion.keySet()) {
-					arene.incrementeCaractElement(attaquant, c, valeursPotion.get(c));
+				if(defenseur.getElement().getNom().equals("MOAB")){
+					List<VuePersonnage> listePers = arene.getPersonnages();
+					Iterator<VuePersonnage> i = listePers.iterator();
+					while(i.hasNext()){
+						VuePersonnage persAdv = i.next();
+						if(persAdv.compareTo(attaquant) != 0){
+							arene.incrementeCaractElement(persAdv, Caracteristique.VIE, valeursPotion.get(Caracteristique.VIE));
+						}
+					}
 				}
+
+				for(Caracteristique caract : valeursPotion.keySet())
+					arene.incrementeCaractElement(attaquant, caract, valeursPotion.get(caract));
 				
 				logs(Level.INFO, "Potion bue !");
 				

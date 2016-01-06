@@ -65,6 +65,7 @@ public class LancePotionForce {
 			caractsPotion.put(Caracteristique.VIE, 0);
 			caractsPotion.put(Caracteristique.FORCE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.FORCE));
 			caractsPotion.put(Caracteristique.INITIATIVE, 0);
+			caractsPotion.put(Caracteristique.VITESSE, 0);
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());

@@ -29,7 +29,8 @@ public class PotionTableModel extends ElementTableModel<VuePotion> {
 		
 		// caracteristiques
 		for(Caracteristique car : Caracteristique.values()) {
-			colonnes.add(new InformationColonne<VuePotion>(car.toString(), 40, Integer.class, new ValeurColonneCaract(car)));
+			if(!car.toString().equals("TYPE"))
+				colonnes.add(new InformationColonne<VuePotion>(car.toString(), 40, Integer.class, new ValeurColonneCaract(car)));
 		}
 		
 		// phrase du personnage

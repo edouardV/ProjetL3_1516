@@ -87,12 +87,14 @@ public class FenetreDetail extends JFrame {
 	    
 	    this.add(jPanelNorth, BorderLayout.NORTH);
 		
-		JPanel panelCaracts = new JPanel(new GridLayout(Caracteristique.nbCaracts(), 1));
+		JPanel panelCaracts = new JPanel(new GridLayout(Caracteristique.nbCaracts()-1, 1));
 		caractPanels =  new ArrayList<DetailCaracteristique>();
 		for (Caracteristique caract : Caracteristique.values()) {
-			DetailCaracteristique caractPanel = new DetailCaracteristique(caract, vue.getElement().getCaract(caract));
-			caractPanels.add(caractPanel);
-			panelCaracts.add(caractPanel);
+			if(caract.toString().equals("TYPE")){
+				DetailCaracteristique caractPanel = new DetailCaracteristique(caract, vue.getElement().getCaract(caract));
+				caractPanels.add(caractPanel);
+				panelCaracts.add(caractPanel);
+			}
 		}	
 		
 		this.add(panelCaracts, BorderLayout.CENTER);

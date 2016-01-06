@@ -25,6 +25,10 @@ public class StrategiePersonnage {
 	 * (l'arene).
 	 */
 	protected Console console;
+	/**
+	 * HashMap permettant de garder les valeurs des personnages de clairvoyance
+	 */
+	protected HashMap<Personnage, Caracteristique> persVu;
 
 	/**
 	 * Cree un personnage, la console associe et sa strategie.
@@ -42,7 +46,7 @@ public class StrategiePersonnage {
 			int nbTours, Point position, LoggerProjet logger) {
 		
 		logger.info("Lanceur", "Creation de la console...");
-		
+		persVu = new HashMap<Personnage, Caracteristique>();
 		try {
 			console = new Console(ipArene, port, ipConsole, this, 
 					new Personnage(nom, groupe, caracts), 
@@ -117,6 +121,7 @@ public class StrategiePersonnage {
 				} // if 
 				else { // si voisins, mais plus eloignes
 					// je vais vers le plus proche
+					// if(arene.lanceClairvoyance)
 					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				} // else 

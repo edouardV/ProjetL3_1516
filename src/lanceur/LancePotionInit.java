@@ -18,7 +18,7 @@ public class LancePotionInit {
 		String nom = "Init";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "G" + Calculs.nombreAleatoire(0,99); 
+		String groupe = "G6"; 
 		
 		// init des arguments
 		int port = Constantes.PORT_DEFAUT;
@@ -65,6 +65,7 @@ public class LancePotionInit {
 			caractsPotion.put(Caracteristique.VIE, 0);
 			caractsPotion.put(Caracteristique.FORCE, 0);
 			caractsPotion.put(Caracteristique.INITIATIVE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.INITIATIVE));
+			caractsPotion.put(Caracteristique.VITESSE, 0);
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());

@@ -148,7 +148,6 @@ public class Console extends UnicastRemoteObject implements IConsole {
 		strategiePer.executeStrategie(voisins);
 	}
 
-
 	@Override
 	public void deconnecte(String cause) throws RemoteException {
 		logger.info(Constantes.nomClasse(this), "Console deconnectee : " + cause);

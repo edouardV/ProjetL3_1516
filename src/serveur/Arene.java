@@ -1040,8 +1040,22 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 			// si une action a deja ete executee
 			logActionDejaExecutee(refRMI);
 		} else {
-			// sinon, on tente de jouer l'interaction
-			new Deplacement(client, getVoisins(refRMI)).seDirigeVers(objectif);
+			int vitesse = client.getElement().getCaract(Caracteristique.VITESSE);
+			if(vitesse < 1){
+				// Si on est gelé
+				IConsole console = consoleFromRef(refRMI);
+				console.log(Level.INFO, Constantes.nomClasse(this), 
+						"Je suis gelé " + nomRaccourciClient(refRMI));
+				vitesse++;
+				client.getElement().getCaracts().put(Caracteristique.VITESSE, vitesse);
+			}
+			// sinon, on se deplace 
+			else{
+				while(vitesse > 0){
+					new Deplacement(client, getVoisins(refRMI)).seDirigeVers(objectif);
+					vitesse--;
+				}
+			}
 			client.executeAction();
 
 			res = true;

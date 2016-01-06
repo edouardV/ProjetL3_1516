@@ -300,7 +300,7 @@ public class IHM extends JFrame implements Runnable {
 		PersMenu.add(peureu);
 		
 		// ajout d'une action pour ajouter un personnage soigneur dans l'arène
-		Action soigneur = new AbstractAction("Archer") {
+		Action soigneur = new AbstractAction("Soigneur") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {
@@ -357,7 +357,28 @@ public class IHM extends JFrame implements Runnable {
 			}
 		};
 		PotionMenu.add(potionVie);
-				
+
+		// ajout d'une action pour ajouter une potion freeze
+		Action potionFreeze = new AbstractAction("Freeze") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePotionFreeze.main(args);
+			}
+		};
+		PotionMenu.add(potionFreeze);
+		
+		// ajout d'une action pour ajouter une potion Ultime (tue tout le monde);
+		Action potionMOAB = new AbstractAction("MOAB") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePotionMOAB.main(args);
+			}
+		};
+		PotionMenu.add(potionMOAB);
 		menuBar.add(PotionMenu);
 		
 		setJMenuBar(menuBar);
