@@ -319,8 +319,7 @@ public class IHM extends JFrame implements Runnable {
 				LancePersonnageSoigneur.main(args);
 			}
 		};
-		PersMenu.add(soigneur);
-		
+		PersMenu.add(soigneur);		
 		menuBar.add(PersMenu);
 		
 		
