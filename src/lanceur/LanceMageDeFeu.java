@@ -23,7 +23,7 @@ public class LanceMageDeFeu {
 		String nom = "MageDeFeu";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "G06"; 
+		String groupe = "G6"; 
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (30 minutes par defaut)

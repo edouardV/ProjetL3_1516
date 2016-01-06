@@ -18,7 +18,7 @@ public class LancePotionInit {
 		String nom = "Init";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "G" + Calculs.nombreAleatoire(0,99); 
+		String groupe = "G6"; 
 		
 		// init des arguments
 		int port = Constantes.PORT_DEFAUT;
