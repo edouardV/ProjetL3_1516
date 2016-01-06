@@ -15,6 +15,8 @@ import utilitaires.Calculs;
 public class Personnage extends Element {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private int brulure = 0;
 
 	/**
 	 * Cree un personnage avec un nom et un groupe.
@@ -57,4 +59,13 @@ public class Personnage extends Element {
 		Integer vie = caracts.get(Caracteristique.VIE);
 		return vie != null && vie > 0;
 	}
+	
+	public int getBrulure() {
+		return this.brulure;
+	}
+	
+	public void setBrulure(int brulure) {
+		this.brulure = brulure;
+	}
+	
 }

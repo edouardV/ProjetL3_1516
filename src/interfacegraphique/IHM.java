@@ -255,8 +255,8 @@ public class IHM extends JFrame implements Runnable {
 		menuBar.add(affichageMenu);
 		
 		JMenu PersMenu = new JMenu("Ajouter Pers");
-		// ajout d'une action pour ajouter un personnage aléatoire dans l'arène
-		Action persAction = new AbstractAction("Aléatoire") {
+		// ajout d'une action pour ajouter un personnage aleatoire dans l'arene
+		Action persAction = new AbstractAction("Aleatoire") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {
@@ -266,7 +266,7 @@ public class IHM extends JFrame implements Runnable {
 		};
 		PersMenu.add(persAction);
 		
-		// ajout d'une action pour ajouter un personnage archer dans l'arène
+		// ajout d'une action pour ajouter un personnage archer dans l'arÃ¨ne
 		Action archer = new AbstractAction("Archer") {
 			private static final long serialVersionUID = 1L;
 
@@ -276,8 +276,19 @@ public class IHM extends JFrame implements Runnable {
 			}
 		};
 		PersMenu.add(archer);
+		
+		// ajout d'une action pour ajouter un personnage Mage de feu dans l'arÃ¨ne
+		Action mageDeFeu = new AbstractAction("Mage de Feu") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LanceMageDeFeu.main(args);
+			}
+		};
+		PersMenu.add(mageDeFeu);
 				
-		// ajout d'une action pour ajouter un personnage assassin dans l'arène
+		// ajout d'une action pour ajouter un personnage assassin dans l'arÃ¨ne
 		Action assassin = new AbstractAction("Assassin") {
 			private static final long serialVersionUID = 1L;
 
@@ -288,7 +299,7 @@ public class IHM extends JFrame implements Runnable {
 		};
 		PersMenu.add(assassin);
 		
-		// ajout d'une action pour ajouter un personnage peureu dans l'arène
+		// ajout d'une action pour ajouter un personnage peureu dans l'arï¿½ne
 		Action peureu = new AbstractAction("Peureu") {
 			private static final long serialVersionUID = 1L;
 
@@ -314,8 +325,8 @@ public class IHM extends JFrame implements Runnable {
 		
 		
 		JMenu PotionMenu = new JMenu("Ajouter Potion");
-		// ajout d'une action pour ajouter une potion aléatoire dans l'arène
-		Action potionAlea = new AbstractAction("Aléatoire") {
+		// ajout d'une action pour ajouter une potion alï¿½atoire dans l'arï¿½ne
+		Action potionAlea = new AbstractAction("Alï¿½atoire") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {
