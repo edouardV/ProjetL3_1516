@@ -15,12 +15,12 @@ import utilitaires.Constantes;
  * Lance une Console avec un Element sur l'Arene. 
  * A lancer apres le serveur, eventuellement plusieurs fois.
  */
-public class LancePersonnage {
+public class LancePersonnageSoigneur {
 	
 	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "BetaPersonnage";
+		String nom = "Soigneur";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G6"; 
@@ -74,12 +74,8 @@ public class LancePersonnage {
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
-			/* le type de personnage aléatoire */
-			/* si on choisit le type en premier au random, on peut remplir les autres stats comme on le veut 
-			 * et donc faire l'assassin de daniel */
-			/*caracts.put(Caracteristique.TYPE_PERSO, 
-					Calculs.valeurCaracAleatoire(Caracteristique.TYPE_PERSO));*/
-			caracts.put(Caracteristique.TYPE_PERSO, 5);
+			/* le type de personnage soigneur */
+			caracts.put(Caracteristique.TYPE_PERSO, 3);
 			
 			Point position = Calculs.positionAleatoireArene();
 			

@@ -126,6 +126,24 @@ public class Calculs {
 		return refPlusProche;
 	}
 	
+
+	
+	public static HashMap<Integer, Point> chercheToutElementProche(Point position, HashMap<Integer, Point> voisins) {
+		int distPlusProche = VISION;
+		HashMap<Integer, Point> refPlusProche = new HashMap<Integer, Point>();
+		
+		for(int refVoisin : voisins.keySet()) {
+			Point target = voisins.get(refVoisin);
+			
+			if (distanceChebyshev(position, target) <= distPlusProche) {
+				distPlusProche = Calculs.distanceChebyshev(position, target);
+				refPlusProche.put(refVoisin, target);
+			}
+		}
+		
+		return refPlusProche;
+	}
+	
 	/**
 	 * Genere un entier dans un intervalle donne.
 	 * @param min borne inferieure de l'intervalle
@@ -220,4 +238,5 @@ public class Calculs {
 		
 		return res;
 	}
+
 }

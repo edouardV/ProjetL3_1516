@@ -151,11 +151,15 @@ public interface IArene extends Remote {
 	/**************************************************************************
 	 * Gestion des interactions.
 	 **************************************************************************/
+	
+	public boolean TireFleche(int refRMI, int refRMIAdv) throws RemoteException;
+	
+	public boolean AeraOfEffect(int refRMI, HashMap<Integer, Point> refPersoAdv) throws RemoteException;
+	
+	public boolean lanceCritique(int refRMI, int refRMIAdv) throws RemoteException;
 
 	public boolean Soigner(int refRMI, int refRMI2) throws RemoteException;
 	
-	
-	public boolean jetePotion(int refRMI, int refPotion) throws RemoteException;
 	
 	/**
 	 * Execute le ramassage d'une potion par un personnage, si possible.
@@ -245,6 +249,8 @@ public interface IArene extends Remote {
 	 * @throws RemoteException
 	 */
 	public void lancePotion(Potion potion, Point position, String motDePasse) throws RemoteException;
+
+	boolean Clairvoyance(int refRMI, int refRMIAdv) throws RemoteException;
 	
 }
 

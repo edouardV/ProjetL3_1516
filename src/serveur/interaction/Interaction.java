@@ -1,6 +1,8 @@
 package serveur.interaction;
 
+import java.awt.Point;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import serveur.Arene;
@@ -32,6 +34,8 @@ public abstract class Interaction<T extends VueElement<?>> {
 	 */
 	protected T defenseur;
 	
+	protected HashMap<Integer, Point> defenseur2;
+	
 	/**
 	 * Cree une interaction entre un personnage et un element.
 	 * @param arene arene
@@ -45,6 +49,15 @@ public abstract class Interaction<T extends VueElement<?>> {
 		this.defenseur = defenseur;
 	}
 	
+
+	public Interaction(Arene arene2, VuePersonnage attaquant2, HashMap<Integer, Point> defenseur2) {
+		// TODO Auto-generated constructor stub
+		this.arene = arene2;
+		this.attaquant = attaquant2;
+		this.defenseur2 = defenseur2;
+	}
+
+
 	/**
 	 * Realise l'interaction.
 	 */

@@ -45,6 +45,9 @@ public class DetailCaracteristique extends JPanel {
 		case INITIATIVE: 
 			couleur = Color.BLUE;
 			break;
+		case TYPE_PERSO: 
+			couleur = Color.BLACK;
+			break;
 		}
 		
 		// valeur ramenee sur 100, en fonction du max de la caracteristique

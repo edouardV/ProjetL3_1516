@@ -160,7 +160,7 @@ public class StrategiePersonnage {
 			} // else 
 		} // if
 		
-		/* type 2 : jeteur de potions */
+		/* type 2 : AOE */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 2)
 		{
 			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
@@ -169,12 +169,23 @@ public class StrategiePersonnage {
 				
 			} // if 
 			else {
+				HashMap<Integer, Point> refCibleMap = Calculs.chercheToutElementProche(position, voisins);
+				HashMap<Integer, Point> refPersoAdv = new HashMap<Integer, Point>();
+				/* refPersoAdv contient les perso adversaire a porté */
+				for (int refAdv : refCibleMap.keySet() ) {
+					Element e = arene.elementFromRef(refAdv);
+					int d = Calculs.distanceChebyshev(position, arene.getPosition(refAdv));
+					if (e instanceof Personnage && d <= Constantes.DISTANCE_MAX_INTERACTION)
+						refPersoAdv.put(refAdv, refCibleMap.get(refAdv));
+				} // for
+				
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) {
+					// si suffisamment proches
 					// j'interagis directement
 					if(elemPlusProche instanceof Potion) { // potion
 						// ne pas ramasser 
@@ -184,17 +195,18 @@ public class StrategiePersonnage {
 					} // if  
 					else { // personnage
 						// attaque
-						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-						arene.lanceAttaque(refRMI, refCible);
+						console.setPhrase("Je fais une AOE avec " + elemPlusProche.getNom());
+						arene.AeraOfEffect(refRMI, refPersoAdv);
 					} // else 
 				} // if 
 				else { // si voisins, mais plus eloignes
 					// je vais vers le plus proche
-					console.setPhrase("il y a risque d'attaque. diversion potion " + elemPlusProche.getNom());
-					arene.jetePotion(refRMI, refCible);
+					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+					arene.deplace(refRMI, refCible);
 				} // else 
 			} // else 
 		} // if
+		
 		
 		/* type 3 : soigneur */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 3) 
@@ -248,6 +260,116 @@ public class StrategiePersonnage {
 				} // else 
 			} // else 
 		} // if
+		
+		/* type 4 : Assassin */
+		if (caracts.get(Caracteristique.TYPE_PERSO) == 4)
+		{
+			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+				console.setPhrase("J'erre...");
+				arene.deplace(refRMI, 0); 
+				
+			} // if 
+			else {
+				int refCible = Calculs.chercheElementProche(position, voisins);
+				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+
+				Element elemPlusProche = arene.elementFromRef(refCible);
+
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+					// j'interagis directement
+					if(elemPlusProche instanceof Potion) { // potion
+						// ramassage
+						console.setPhrase("Je ramasse une potion");
+						arene.ramassePotion(refRMI, refCible);
+
+					} // if  
+					else { // personnage
+						// duel
+						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+						arene.lanceCritique(refRMI, refCible);
+					} // else 
+				} // if 
+				else { // si voisins, mais plus eloignes
+					// je vais vers le plus proche
+					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+					arene.deplace(refRMI, refCible);
+				} // else 
+			} // else 
+		} // if
+		
+		/* type 5 : archer */
+		if (caracts.get(Caracteristique.TYPE_PERSO) == 5)
+		{
+			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+				console.setPhrase("J'erre...");
+				arene.deplace(refRMI, 0); 
+				
+			} // if 
+			else {
+				int refCible = Calculs.chercheElementProche(position, voisins);
+				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+
+				Element elemPlusProche = arene.elementFromRef(refCible);
+
+				if(distPlusProche <= Constantes.DISTANCE_MAX_INTERACTION) { // si suffisamment proches
+					// j'interagis directement
+					if(elemPlusProche instanceof Potion) { // potion
+						// ramassage
+						console.setPhrase("Je ramasse une potion");
+						arene.ramassePotion(refRMI, refCible);
+
+					} // if  
+					else { // personnage
+						// duel
+						console.setPhrase("Je tire une fleche sur " + elemPlusProche.getNom());
+						arene.TireFleche(refRMI, refCible);
+					} // else 
+				} // if 
+				else { // si voisins, mais plus eloignes
+					// je vais vers le plus proche
+					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+					arene.deplace(refRMI, refCible);
+				} // else 
+			} // else 
+		} // if
+		
+		/* type 6 : Clairvoyeur */
+		if (caracts.get(Caracteristique.TYPE_PERSO) == 6)
+		{
+			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+				console.setPhrase("J'erre...");
+				arene.deplace(refRMI, 0); 
+				
+			} // if 
+			else {
+				int refCible = Calculs.chercheElementProche(position, voisins);
+				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+
+				Element elemPlusProche = arene.elementFromRef(refCible);
+
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+					// j'interagis directement
+					if(elemPlusProche instanceof Potion) { // potion
+						// ramassage
+						console.setPhrase("Je ramasse une potion");
+						arene.ramassePotion(refRMI, refCible);
+
+					} // if  
+					else { // personnage
+						// duel
+						console.setPhrase("J'utilise mon pouvoir de clairvoyance sur " + elemPlusProche.getNom());
+						arene.Clairvoyance(refRMI, refCible);
+					} // else 
+				} // if 
+				else { // si voisins, mais plus eloignes
+					// je vais vers le plus proche
+					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+					arene.deplace(refRMI, refCible);
+				} // else 
+			} // else 
+		} // if
+		
+		
 	} // execute stratégie 	
 	
 } // class 

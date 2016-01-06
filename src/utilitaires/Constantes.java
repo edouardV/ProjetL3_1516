@@ -60,6 +60,8 @@ public class Constantes {
 	 * possible. 
 	 */
 	public static final int DISTANCE_MIN_INTERACTION = 2;
+	
+	public static final int DISTANCE_MAX_INTERACTION = 20;
 
 	/**
 	 * Abscisse minimale de l'arene.

@@ -24,7 +24,10 @@ import serveur.element.Potion;
 import serveur.interaction.Deplacement;
 import serveur.interaction.Duel;
 import serveur.interaction.Soigner;
-import serveur.interaction.JeterPotion;
+import serveur.interaction.TirerFleche;
+import serveur.interaction.AeraOfEffect;
+import serveur.interaction.Clairvoyance;
+import serveur.interaction.CoupCritique;
 import serveur.interaction.Ramassage;
 import serveur.vuelement.VueElement;
 import serveur.vuelement.VuePersonnage;
@@ -698,6 +701,169 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		logElements();
 	}
 	
+	@Override
+	public boolean Clairvoyance(int refRMI, int refRMIAdv) throws RemoteException {
+		boolean res = false;
+		
+		VuePersonnage client = personnages.get(refRMI);
+		VuePersonnage client2 = personnages.get(refRMIAdv);
+		
+			
+		new Clairvoyance(this, client, client2).interagit();
+		personnages.get(refRMI).executeAction();
+		
+		return res;
+	}
+	
+	
+	public boolean AeraOfEffect(int refRMI, HashMap<Integer, Point> refPersoAdv) throws RemoteException {
+		boolean res = false;
+		
+		VuePersonnage client = personnages.get(refRMI);
+		
+			
+		new AeraOfEffect(this, client, refPersoAdv).interagit();
+					personnages.get(refRMI).executeAction();
+		
+		return res;
+	}
+	
+	@Override
+	public boolean TireFleche(int refRMI, int refRMIAdv) throws RemoteException {
+		boolean res = false;
+		
+		VuePersonnage client = personnages.get(refRMI);
+		VuePersonnage clientAdv = personnages.get(refRMIAdv);
+		
+		if (personnages.get(refRMI).isActionExecutee()) {
+			// si une action a deja ete executee
+			logActionDejaExecutee(refRMI);
+			
+		} else {
+			// sinon, on tente de jouer l'interaction
+			IConsole console = consoleFromRef(refRMI);
+			IConsole consoleAdv = consoleFromRef(refRMIAdv);
+			
+			int distance = Calculs.distanceChebyshev(personnages.get(refRMI).getPosition(), 
+					personnages.get(refRMIAdv).getPosition());
+
+			// on teste la distance entre les personnages
+			if (distance <= Constantes.DISTANCE_MAX_INTERACTION) {
+				Personnage pers = (Personnage) elementFromRef(refRMI);
+				Personnage persAdv = (Personnage) elementFromRef(refRMIAdv);
+				
+				// on teste que les deux personnages soient en vie
+				if (pers.estVivant() && persAdv.estVivant()) {
+					console.log(Level.INFO, Constantes.nomClasse(this), 
+							"Je tire une fleche " + nomRaccourciClient(refRMIAdv));
+					consoleAdv.log(Level.INFO, Constantes.nomClasse(this), 
+							"Je me suis fait tiré dessus par " + nomRaccourciClient(refRMI));
+					
+					logger.info(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+							" tir une fleche sur " + nomRaccourciClient(consoleAdv.getRefRMI()));
+			
+					new TirerFleche(this, client, clientAdv).interagit();
+					personnages.get(refRMI).executeAction();
+					
+					// si l'adversaire est mort
+					if (!persAdv.estVivant()) {
+						setPhrase(refRMI, "Je tue " + nomRaccourciClient(consoleAdv.getRefRMI()));
+						console.log(Level.INFO, Constantes.nomClasse(this), 
+								"Je tue " + nomRaccourciClient(refRMI));
+						
+						logger.info(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+								" tue " + nomRaccourciClient(consoleAdv.getRefRMI()));
+					}
+					
+					res = true;
+				} else {
+					logger.warning(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+							" a tente d'interagir avec "+nomRaccourciClient(refRMIAdv)+", alors qu'il est mort...");
+					
+					console.log(Level.WARNING, Constantes.nomClasse(this), 
+							nomRaccourciClient(refRMIAdv) + " est deja mort !");
+				}
+			} else {
+				logger.warning(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+						" a tente d'interagir avec "+nomRaccourciClient(refRMIAdv) + 
+						", alors qu'il est trop eloigne... Distance de chebyshev = " + distance);
+				
+				console.log(Level.WARNING, "AVERTISSEMENT ARENE", 
+						nomRaccourciClient(refRMIAdv) + " est trop eloigne !\nDistance = " + distance);
+			}
+		}
+		
+		return res;
+	}
+	
+	@Override
+	public boolean lanceCritique(int refRMI, int refRMIAdv) throws RemoteException {
+		boolean res = false;
+		
+		VuePersonnage client = personnages.get(refRMI);
+		VuePersonnage clientAdv = personnages.get(refRMIAdv);
+		
+		if (personnages.get(refRMI).isActionExecutee()) {
+			// si une action a deja ete executee
+			logActionDejaExecutee(refRMI);
+			
+		} else {
+			// sinon, on tente de jouer l'interaction
+			IConsole console = consoleFromRef(refRMI);
+			IConsole consoleAdv = consoleFromRef(refRMIAdv);
+			
+			int distance = Calculs.distanceChebyshev(personnages.get(refRMI).getPosition(), 
+					personnages.get(refRMIAdv).getPosition());
+
+			// on teste la distance entre les personnages
+			if (distance <= Constantes.DISTANCE_MIN_INTERACTION) {
+				Personnage pers = (Personnage) elementFromRef(refRMI);
+				Personnage persAdv = (Personnage) elementFromRef(refRMIAdv);
+				
+				// on teste que les deux personnages soient en vie
+				if (pers.estVivant() && persAdv.estVivant()) {
+					console.log(Level.INFO, Constantes.nomClasse(this), 
+							"J'attaque " + nomRaccourciClient(refRMIAdv));
+					consoleAdv.log(Level.INFO, Constantes.nomClasse(this), 
+							"Je me fait attaquer par " + nomRaccourciClient(refRMI));
+					
+					logger.info(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+							" attaque " + nomRaccourciClient(consoleAdv.getRefRMI()));
+			
+					new CoupCritique(this, client, clientAdv).interagit();
+					personnages.get(refRMI).executeAction();
+					
+					// si l'adversaire est mort
+					if (!persAdv.estVivant()) {
+						setPhrase(refRMI, "Je tue " + nomRaccourciClient(consoleAdv.getRefRMI()));
+						console.log(Level.INFO, Constantes.nomClasse(this), 
+								"Je tue " + nomRaccourciClient(refRMI));
+						
+						logger.info(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+								" tue " + nomRaccourciClient(consoleAdv.getRefRMI()));
+					}
+					
+					res = true;
+				} else {
+					logger.warning(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+							" a tente d'interagir avec "+nomRaccourciClient(refRMIAdv)+", alors qu'il est mort...");
+					
+					console.log(Level.WARNING, Constantes.nomClasse(this), 
+							nomRaccourciClient(refRMIAdv) + " est deja mort !");
+				}
+			} else {
+				logger.warning(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
+						" a tente d'interagir avec "+nomRaccourciClient(refRMIAdv) + 
+						", alors qu'il est trop eloigne... Distance de chebyshev = " + distance);
+				
+				console.log(Level.WARNING, "AVERTISSEMENT ARENE", 
+						nomRaccourciClient(refRMIAdv) + " est trop eloigne !\nDistance = " + distance);
+			}
+		}
+		
+		return res;
+	}
+	
 	public boolean Soigner(int refRMI, int refRMI2) throws RemoteException {
 		boolean res = false;
 		
@@ -742,35 +908,6 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		return res;
 	} // Soigner
 
-	public boolean jetePotion(int refRMI, int refPotion) throws RemoteException {
-		boolean res = false;
-		
-		VuePersonnage vuePersonnage = personnages.get(refRMI);
-		VuePotion vuePotion = potions.get(refPotion);
-		
-		if (vuePersonnage.isActionExecutee()) {
-			// si une action a deja ete executee
-			logActionDejaExecutee(refRMI);
-			
-		} else {
-			// sinon, on tente de jouer l'interaction
-			int distance = Calculs.distanceChebyshev(vuePersonnage.getPosition(), vuePotion.getPosition());
-			
-			// on teste la distance entre le personnage et la potion
-			if (distance <= Constantes.DISTANCE_MIN_INTERACTION) {
-				new JeterPotion(this, vuePersonnage, vuePotion).interagit();
-				personnages.get(refRMI).executeAction();
-				
-				res = true;
-			} else {
-				logger.warning(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
-						" a tente d'interagir avec " + vuePotion.getElement().getNom() + 
-						", alors qu'il est trop eloigne !\nDistance = " + distance);
-			}
-		}
-		
-		return res;
-	}
 	
 	
 	@Override
