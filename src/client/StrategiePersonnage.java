@@ -339,7 +339,7 @@ public class StrategiePersonnage {
 			} // else 
 		} // if
 		
-		/* type 6 : Clairvoyeur */
+		/* type 6 : mage de feu  */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 6)
 		{
 			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
@@ -363,8 +363,8 @@ public class StrategiePersonnage {
 					} // if  
 					else { // personnage
 						// duel
-						console.setPhrase("J'utilise mon pouvoir de clairvoyance sur " + elemPlusProche.getNom());
-						arene.Clairvoyance(refRMI, refCible);
+						console.setPhrase("Je lance brulure sur " + elemPlusProche.getNom());
+						arene.LanceBrulure(refRMI, refCible);
 					} // else 
 				} // if 
 				else { // si voisins, mais plus eloignes

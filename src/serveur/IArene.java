@@ -152,6 +152,8 @@ public interface IArene extends Remote {
 	 * Gestion des interactions.
 	 **************************************************************************/
 	
+	public boolean LanceBrulure(int refRMI, int refRMIAdv) throws RemoteException;
+	
 	public boolean TireFleche(int refRMI, int refRMIAdv) throws RemoteException;
 	
 	public boolean AeraOfEffect(int refRMI, HashMap<Integer, Point> refPersoAdv) throws RemoteException;
