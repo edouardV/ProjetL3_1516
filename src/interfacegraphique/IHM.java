@@ -29,6 +29,7 @@ import interfacegraphique.interfacesimple.ElementsJPanel;
 import interfacegraphique.interfacesimple.FenetreClassement;
 import interfacegraphique.interfacesimple.FenetreDetail;
 import interfacegraphique.interfacesimple.components.VictoryScreen;
+import lanceur.*;
 import logger.LoggerProjet;
 import serveur.IAreneIHM;
 import serveur.vuelement.VueElement;
@@ -252,6 +253,113 @@ public class IHM extends JFrame implements Runnable {
 		affichageMenu.add(affichageJauge);
 		// affichageMenu.add(controleAction);
 		menuBar.add(affichageMenu);
+		
+		JMenu PersMenu = new JMenu("Ajouter Pers");
+		// ajout d'une action pour ajouter un personnage aléatoire dans l'arène
+		Action persAction = new AbstractAction("Aléatoire") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnage.main(args);
+			}
+		};
+		PersMenu.add(persAction);
+		
+		// ajout d'une action pour ajouter un personnage archer dans l'arène
+		Action archer = new AbstractAction("Archer") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnageArcher.main(args);
+			}
+		};
+		PersMenu.add(archer);
+				
+		// ajout d'une action pour ajouter un personnage assassin dans l'arène
+		Action assassin = new AbstractAction("Assassin") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnageAssassin.main(args);
+			}
+		};
+		PersMenu.add(assassin);
+		
+		// ajout d'une action pour ajouter un personnage peureu dans l'arène
+		Action peureu = new AbstractAction("Peureu") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnagePeureu.main(args);
+			}
+		};
+		PersMenu.add(peureu);
+		
+		// ajout d'une action pour ajouter un personnage soigneur dans l'arène
+		Action soigneur = new AbstractAction("Archer") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnageSoigneur.main(args);
+			}
+		};
+		PersMenu.add(soigneur);
+		
+		menuBar.add(PersMenu);
+		
+		
+		JMenu PotionMenu = new JMenu("Ajouter Potion");
+		// ajout d'une action pour ajouter une potion aléatoire dans l'arène
+		Action potionAlea = new AbstractAction("Aléatoire") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePotion.main(args);
+			}
+		};
+		PotionMenu.add(potionAlea);
+		
+		// ajout d'une action pour ajouter une potion force
+		Action potionForce = new AbstractAction("Force") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePotionForce.main(args);
+			}
+		};
+		PotionMenu.add(potionForce);
+		
+		// ajout d'une action pour ajouter une potion init
+		Action potionInit = new AbstractAction("Init") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePotionInit.main(args);
+			}
+		};
+		PotionMenu.add(potionInit);
+		
+		// ajout d'une action pour ajouter une potion vie
+		Action potionVie = new AbstractAction("Vie") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePotionVie.main(args);
+			}
+		};
+		PotionMenu.add(potionVie);
+				
+		menuBar.add(PotionMenu);
+		
 		setJMenuBar(menuBar);
 	}
 

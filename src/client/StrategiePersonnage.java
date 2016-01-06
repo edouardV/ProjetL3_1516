@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import client.controle.Console;
 import logger.LoggerProjet;
-import serveur.Arene;
 import serveur.IArene;
 import serveur.element.Caracteristique;
 import serveur.element.Element;
@@ -314,9 +313,16 @@ public class StrategiePersonnage {
 				if(distPlusProche <= Constantes.DISTANCE_MAX_INTERACTION) { // si suffisamment proches
 					// j'interagis directement
 					if(elemPlusProche instanceof Potion) { // potion
-						// ramassage
-						console.setPhrase("Je ramasse une potion");
-						arene.ramassePotion(refRMI, refCible);
+						if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION){
+							// ramassage
+							console.setPhrase("Je ramasse une potion");
+							arene.ramassePotion(refRMI, refCible);
+						}
+						else{
+							// je vais vers le plus proche
+							console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+							arene.deplace(refRMI, refCible);
+						}
 
 					} // if  
 					else { // personnage
