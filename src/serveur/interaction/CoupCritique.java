@@ -11,6 +11,9 @@ import serveur.vuelement.VuePersonnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+/**
+ * Represente une attaque pour laquelle l'attaquant a 50% de chance de faire 2 fois plus de degats a sa victime.
+ */
 public class CoupCritique extends Interaction<VuePersonnage>  {
 
 	public CoupCritique(Arene arene, VuePersonnage attaquant, VuePersonnage defenseur) {

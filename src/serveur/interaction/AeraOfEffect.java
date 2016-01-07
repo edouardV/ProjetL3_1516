@@ -9,9 +9,12 @@ import serveur.Arene;
 import serveur.element.Caracteristique;
 import serveur.element.Personnage;
 import serveur.vuelement.VuePersonnage;
-import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+
+/**
+ * Represente une attaque qui inflige des degats a tous les ennemis dans un rayon de 20 cases.
+ */
 public class AeraOfEffect  extends Interaction<VuePersonnage> {
 
 	public AeraOfEffect(Arene arene, VuePersonnage attaquant, HashMap<Integer, Point> defenseur) {
@@ -26,6 +29,7 @@ public class AeraOfEffect  extends Interaction<VuePersonnage> {
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
 			int perteVie = forceAttaquant;
 			
+			// on parcours tous les personnages sur lesquels on doit infliger les degats de l'AOE
 			for (int refAdv : defenseur2.keySet() ) {
 				VuePersonnage PersoEnCours = (VuePersonnage) arene.vueFromRef(refAdv);
 				Personnage p = PersoEnCours.getElement();
@@ -67,56 +71,5 @@ public class AeraOfEffect  extends Interaction<VuePersonnage> {
 				-Constantes.INCR_DECR_INITIATIVE_DUEL);
 	}
 
-	
-	/**
-	 * Retourne la position ou le defenseur se retrouvera apres ejection.
-	 * @param posDefenseur position d'origine du defenseur
-	 * @param positionAtt position de l'attaquant
-	 * @param forceAtt force de l'attaquant
-	 * @return position d'ejection du personnage
-	 */
-	private Point positionEjection(Point posDefenseur, Point positionAtt, int forceAtt) {
-		int distance = forceVersDistance(forceAtt);
-		
-		// abscisses 
-		int dirX = posDefenseur.x - positionAtt.x;
-		
-		if (dirX > 0) {
-			dirX = distance;
-		}
-		
-		if (dirX < 0) {
-			dirX = -distance;
-		}
-		
-		// ordonnees
-		int dirY = posDefenseur.y - positionAtt.y;
-		
-		if (dirY > 0) {
-			dirY = distance;
-		}
-		
-		if (dirY < 0) {
-			dirY = -distance;
-		}
-		
-		int x = posDefenseur.x + dirX;
-		int y = posDefenseur.y + dirY;
-		
-		return Calculs.restreintPositionArene(new Point(x, y));
-	}
-	
-	/**
-	 * Calcule la distance a laquelle le defenseur est projete suite a un coup.
-	 * @param forceAtt force de l'attaquant
-	 * @return distance de projection
-	 */
-	private int forceVersDistance(int forceAtt) {
-		int max = Caracteristique.FORCE.getMax();
-		
-		int quart = (int) (4 * ((float) (forceAtt - 1) / max)); // -1 pour le cas force = 100
-		
-		return Constantes.DISTANCE_PROJECTION[quart];
-	}
 }
 

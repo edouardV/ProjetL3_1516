@@ -25,10 +25,6 @@ public class StrategiePersonnage {
 	 * (l'arene).
 	 */
 	protected Console console;
-	/**
-	 * HashMap permettant de garder les valeurs des personnages de clairvoyance
-	 */
-	protected HashMap<Personnage, Caracteristique> persVu;
 
 	/**
 	 * Cree un personnage, la console associe et sa strategie.
@@ -46,7 +42,6 @@ public class StrategiePersonnage {
 			int nbTours, Point position, LoggerProjet logger) {
 		
 		logger.info("Lanceur", "Creation de la console...");
-		persVu = new HashMap<Personnage, Caracteristique>();
 		try {
 			console = new Console(ipArene, port, ipConsole, this, 
 					new Personnage(nom, groupe, caracts), 
@@ -87,99 +82,111 @@ public class StrategiePersonnage {
 			e.printStackTrace();
 		} // catch
 		
-		/* récuperer les caracteristique du personnage */
+		/* recuperer les caracteristiques du personnage */
 		HashMap<Caracteristique, Integer> caracts = console.getPersonnage().getCaracts();
 		
-		/* selon le type de personnage, executer la stratégie */
-		/* type 0 : normal */
+		
+		/* selon le type de personnage, executer la strategie correspondante */
+		/* type 0 : Personnage basique */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 0)
 		{
-			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			
+			if (voisins.isEmpty()) { // si je n'ai pas de voisin, j'erre
 				console.setPhrase("J'erre...");
-				arene.deplace(refRMI, 0); 
-				
+				arene.deplace(refRMI, 0); 	
 			} // if 
+			
 			else {
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si l'element voisin le plus proche est a portee
 					// j'interagis directement
-					if(elemPlusProche instanceof Potion) { // potion
-						// ramassage
+					if(elemPlusProche instanceof Potion) { // si c'est une potion
+						// je la ramassage
 						console.setPhrase("Je ramasse une potion");
 						arene.ramassePotion(refRMI, refCible);
-
 					} // if  
-					else { // personnage
-						// duel
+					else { // si c'est un personnage
+						// je lance le duel
 						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 						arene.lanceAttaque(refRMI, refCible);
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					// je vais vers le plus proche
-					// if(arene.lanceClairvoyance)
+				else { // si le voisin le plus proche n'est pas a portee
+					// je vais vers lui
 					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				} // else 
 			} // else 
+			
 		} // if
 		
-		/* type 1 : eviter les potions */
+		
+		/* type 1 : Peureux (evite les potions) */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 1)
 		{
-			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			
+			if (voisins.isEmpty()) { // si je n'ai pas de voisin, j'erre
 				console.setPhrase("J'erre...");
 				arene.deplace(refRMI, 0); 
-				
 			} // if 
+			
 			else {
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si l'element voisin le plus proche est a portee
 					// j'interagis directement
-					if(elemPlusProche instanceof Potion) { // potion
-						// ne pas ramasser 
-						console.setPhrase("Une potion ! Je suis sur que c'est un piège...");
+					if(elemPlusProche instanceof Potion) { // si c'est une potion
+						// ne PAS ramasser (errer) 
+						console.setPhrase("Une potion ! Je suis sur que c'est un piege...");
 						arene.deplace(refRMI, 0);
-
 					} // if  
-					else { // personnage
-						// attaque
+					else { // si c'est un personnage
+						// je l'attaque
 						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 						arene.lanceAttaque(refRMI, refCible);
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					// je vais vers le plus proche
-					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+				else { // si le voisin le plus proche n'est pas a portee
+					if(elemPlusProche instanceof Potion) { // si c'est une potion
+						// l'ignorer (errer)
+						console.setPhrase("Une potion...Continuons a errer...");
+						arene.deplace(refRMI, 0);
+					} // if  
+					else { // si c'est un personnage
+					// je vais vers lui
+					console.setPhrase("Je vais vers le personnage " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
+					} // else
 				} // else 
 			} // else 
+			
 		} // if
+		
 		
 		/* type 2 : AOE */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 2)
 		{
-			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			
+			if (voisins.isEmpty()) { // je n'ai pas de voisin, j'erre
 				console.setPhrase("J'erre...");
 				arene.deplace(refRMI, 0); 
-				
 			} // if 
+			
 			else {
 				HashMap<Integer, Point> refCibleMap = Calculs.chercheToutElementProche(position, voisins);
-				HashMap<Integer, Point> refPersoAdv = new HashMap<Integer, Point>();
-				/* refPersoAdv contient les perso adversaire a porté */
+				HashMap<Integer, Point> refPersoAdv = new HashMap<Integer, Point>();	//contient les perso adversaires a portee
+				
 				for (int refAdv : refCibleMap.keySet() ) {
 					Element e = arene.elementFromRef(refAdv);
 					int d = Calculs.distanceChebyshev(position, arene.getPosition(refAdv));
-					if (e instanceof Personnage && d <= Constantes.DISTANCE_MAX_INTERACTION)
+					if (e instanceof Personnage && d <= (Constantes.DISTANCE_MAX_INTERACTION))	//les personnages dans la zone de l'aoe (20 de rayon) prendront aussi des degats
 						refPersoAdv.put(refAdv, refCibleMap.get(refAdv));
 				} // for
 				
@@ -189,97 +196,105 @@ public class StrategiePersonnage {
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
 				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) {
-					// si suffisamment proches
+					// si suffisamment proche
 					// j'interagis directement
 					if(elemPlusProche instanceof Potion) { // potion
-						// ne pas ramasser 
-						console.setPhrase("Une potion ! Je suis sur que c'est un piège...");
-						arene.deplace(refRMI, 0);
-
+						// ramasser 
+						console.setPhrase("Une potion ! Je la bois ");
+						arene.ramassePotion(refRMI,refCible);
 					} // if  
 					else { // personnage
-						// attaque
-						console.setPhrase("Je fais une AOE avec " + elemPlusProche.getNom());
+						// attaque AOE
+						console.setPhrase("Je lance un AOE sur " + elemPlusProche.getNom());
 						arene.AeraOfEffect(refRMI, refPersoAdv);
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					// je vais vers le plus proche
+				else { // si voisin plus proche pas a portee
+					// je vais vers lui
 					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				} // else 
 			} // else 
+			
 		} // if
 		
 		
 		/* type 3 : soigneur */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 3) 
 		{
+			
 			if (voisins.isEmpty()) { /* pas de voisin */
-				/* si le personnage a moins de 50 poins de vie */
+				/* si j'ai moins de 50 points de vie, je me soigne */
 				if (caracts.get(Caracteristique.VIE) <= 50) {
 					console.setPhrase("je me soigne");
 					arene.Soigner(refRMI, refRMI);
 				} // if
+				/* sinon j'erre */
 				else {
 					console.setPhrase("J'erre...");
 					arene.deplace(refRMI, 0);
 				} // else
 			} // if 
+			
 			else {	/* il y a des voisins */
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proche
 					// j'interagis directement
 					if(elemPlusProche instanceof Potion) { // potion
-						// ne pas ramasser 
+						// je la bois
 						console.setPhrase("Une potion ! Je la bois ");
 						arene.ramassePotion(refRMI, refCible);
 					} // if  
 					else { // personnage
-						/* si le personnage a moins de 50 poins de vie */
+						/* si j'ai moins de 50 points de vie, je me soigne */
 						if (caracts.get(Caracteristique.VIE) <= 50) {
 							console.setPhrase("je me soigne");
 							arene.Soigner(refRMI, refRMI);
 						} // if
+						/* sinon j'attaque */
 						else {
 							console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 							arene.lanceAttaque(refRMI, refCible);
 						} // else 
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					/* si le personnage a moins de 50 poins de vie */
+				else { // si voisin pas a portee
+					/* si j'ai moins de 50 points de vie, je me soigne */
 					if (caracts.get(Caracteristique.VIE) <= 50) {
 						console.setPhrase("je me soigne");
 						arene.Soigner(refRMI, refRMI);
 					} // if
+					/* sinon je vais vers mon voisin */
 					else {
 						console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 						arene.deplace(refRMI, refCible);
 					} // else
 				} // else 
 			} // else 
+			
 		} // if
+		
 		
 		/* type 4 : Assassin */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 4)
 		{
-			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			
+			if (voisins.isEmpty()) { // je n'ai pas de voisin, j'erre
 				console.setPhrase("J'erre...");
 				arene.deplace(refRMI, 0); 
-				
 			} // if 
+			
 			else {
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proche
 					// j'interagis directement
 					if(elemPlusProche instanceof Potion) { // potion
 						// ramassage
@@ -288,99 +303,104 @@ public class StrategiePersonnage {
 
 					} // if  
 					else { // personnage
-						// duel
-						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+						// je l'attaque avec une chance de coup critique
+						console.setPhrase("Je tente un coup critique sur " + elemPlusProche.getNom());
 						arene.lanceCritique(refRMI, refCible);
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					// je vais vers le plus proche
+				else { // si le voisin le plus proche n'est pas a portee
+					// je vais vers lui
 					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				} // else 
 			} // else 
+			
 		} // if
+		
 		
 		/* type 5 : archer */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 5)
 		{
-			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			
+			if (voisins.isEmpty()) { // je n'ai pas de voisin, j'erre
 				console.setPhrase("J'erre...");
 				arene.deplace(refRMI, 0); 
-				
 			} // if 
+			
 			else {
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MAX_INTERACTION) { // si suffisamment proches
-					// j'interagis directement
+				if(distPlusProche <= Constantes.DISTANCE_MAX_INTERACTION) { // si le voisin le plus proche est a portee de tir (20 cases max)
+					// je verifie son type
 					if(elemPlusProche instanceof Potion) { // potion
-						if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION){
+						if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION){ //si elle est a portee
 							// ramassage
 							console.setPhrase("Je ramasse une potion");
 							arene.ramassePotion(refRMI, refCible);
 						}
-						else{
-							// je vais vers le plus proche
-							console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+						else{	//si elle n'est pas a portee
+							// je vais vers elle
+							console.setPhrase("Je vais vers la potion " + elemPlusProche.getNom());
 							arene.deplace(refRMI, refCible);
 						}
-
 					} // if  
 					else { // personnage
-						// duel
+						// je tire sur lui une fleche
 						console.setPhrase("Je tire une fleche sur " + elemPlusProche.getNom());
 						arene.TireFleche(refRMI, refCible);
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					// je vais vers le plus proche
+				else { // si le voisin le plus proche n'est pas encore a portee de tir
+					// je vais vers lui
 					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				} // else 
 			} // else 
+			
 		} // if
+		
 		
 		/* type 6 : mage de feu  */
 		if (caracts.get(Caracteristique.TYPE_PERSO) == 6)
 		{
-			if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			
+			if (voisins.isEmpty()) { // je n'ai pas de voisin, j'erre
 				console.setPhrase("J'erre...");
 				arene.deplace(refRMI, 0); 
-				
 			} // if 
+			
 			else {
 				int refCible = Calculs.chercheElementProche(position, voisins);
 				int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 				Element elemPlusProche = arene.elementFromRef(refCible);
 
-				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+				if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proche
 					// j'interagis directement
 					if(elemPlusProche instanceof Potion) { // potion
 						// ramassage
 						console.setPhrase("Je ramasse une potion");
 						arene.ramassePotion(refRMI, refCible);
-
 					} // if  
 					else { // personnage
-						// duel
+						// je le brule
 						console.setPhrase("Je lance brulure sur " + elemPlusProche.getNom());
 						arene.LanceBrulure(refRMI, refCible);
 					} // else 
 				} // if 
-				else { // si voisins, mais plus eloignes
-					// je vais vers le plus proche
+				else { // si voisin le plus proche pas a portee
+					// je vais vers lui
 					console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				} // else 
 			} // else 
+			
 		} // if
 		
 		
-	} // execute stratégie 	
+	} // method executeStrategie 	
 	
 } // class 

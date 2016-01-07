@@ -24,14 +24,14 @@ public enum Caracteristique {
 	INITIATIVE("Initiative", "INIT", 0, 200, 50),
 	
 	/**
-	 * TYPE_PERSO : definit le type de personnage 
+	 * VITESSE : vitesse de deplacement du personnage 
 	 */
-	TYPE_PERSO("Type_perso", "TYPE", 0, 6, 0),
-
+	VITESSE("Vitesse", "VIT", -4, 4, 1),
+	
 	/**
-	 * VITESSE : vitesse de déplacement du personnage 
+	 * TYPE_PERSO : definit le type du personnage 
 	 */
-	VITESSE("Vitesse", "VIT", -4, 4, 1);
+	TYPE_PERSO("Type_perso", "TYPE", 0, 6, 0);
 	
 	/**
 	 * Nom complet.

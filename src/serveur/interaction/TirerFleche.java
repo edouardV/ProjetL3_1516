@@ -10,8 +10,7 @@ import serveur.vuelement.VuePersonnage;
 import utilitaires.Constantes;
 
 /**
- * Represente un duel entre deux personnages.
- *
+ * Represente une attaque a distance (20 cases max) sur un personnage.
  */
 public class TirerFleche extends Interaction<VuePersonnage> {
 	

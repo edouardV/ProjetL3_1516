@@ -12,8 +12,7 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Lance une Console avec un Element sur l'Arene. 
- * A lancer apres le serveur, eventuellement plusieurs fois.
+ * Lance un personnage plus rapide que les autres et ayant 50% de chance de faire 2 fois plus de degats lors d'une attaque
  */
 public class LancePersonnageAssassin {
 	
@@ -57,7 +56,7 @@ public class LancePersonnageAssassin {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "personnage_" + nom + groupe);
+			logger = new LoggerProjet(true, "assassin_" + nom + groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -67,20 +66,20 @@ public class LancePersonnageAssassin {
 		try {
 			String ipConsole = InetAddress.getLocalHost().getHostAddress();
 			
-			logger.info("Lanceur", "Creation du personnage...");
+			logger.info("Lanceur", "Creation de l'assassin...");
 			
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
-			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
+			caracts.put(Caracteristique.VITESSE, 2);
 			/* le type de personnage Assassin */
 			caracts.put(Caracteristique.TYPE_PERSO, 4);
 			
 			Point position = Calculs.positionAleatoireArene();
 			
 			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
-			logger.info("Lanceur", "Creation du personnage reussie");
+			logger.info("Lanceur", "Creation de l'assassin reussie");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

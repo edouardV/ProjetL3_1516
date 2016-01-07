@@ -10,6 +10,9 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+/*
+ * Lance une potion basique (qui donne egalement une vitesse aleatoire)
+ */
 public class LancePotion {
 	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
@@ -65,6 +68,7 @@ public class LancePotion {
 			caractsPotion.put(Caracteristique.VIE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.VIE));
 			caractsPotion.put(Caracteristique.FORCE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.FORCE));
 			caractsPotion.put(Caracteristique.INITIATIVE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.INITIATIVE));
+			caractsPotion.put(Caracteristique.VITESSE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.VITESSE));
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());

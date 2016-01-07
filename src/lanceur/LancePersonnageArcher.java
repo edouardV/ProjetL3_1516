@@ -12,8 +12,7 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Lance une Console avec un Element sur l'Arene. 
- * A lancer apres le serveur, eventuellement plusieurs fois.
+ * Lance un personnage pouvant attaquer a longue distance
  */
 public class LancePersonnageArcher {
 	
@@ -57,7 +56,7 @@ public class LancePersonnageArcher {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "personnage_" + nom + groupe);
+			logger = new LoggerProjet(true, "archer_" + nom + groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -67,11 +66,11 @@ public class LancePersonnageArcher {
 		try {
 			String ipConsole = InetAddress.getLocalHost().getHostAddress();
 			
-			logger.info("Lanceur", "Creation du personnage...");
+			logger.info("Lanceur", "Creation de l'archer...");
 			
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
-			// seule la force n'a pas sa valeur par defaut (exemple)
+			// seule la force n'a pas sa valeur par defaut
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
 			/* le type de personnage archer */
@@ -80,7 +79,7 @@ public class LancePersonnageArcher {
 			Point position = Calculs.positionAleatoireArene();
 			
 			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
-			logger.info("Lanceur", "Creation du personnage reussie");
+			logger.info("Lanceur", "Creation de l'archer reussie");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

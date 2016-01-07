@@ -27,7 +27,6 @@ import serveur.interaction.Soigner;
 import serveur.interaction.TirerFleche;
 import serveur.interaction.AeraOfEffect;
 import serveur.interaction.Bruler;
-import serveur.interaction.Clairvoyance;
 import serveur.interaction.CoupCritique;
 import serveur.interaction.Ramassage;
 import serveur.vuelement.VueElement;
@@ -171,9 +170,9 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 							// attente de la fin de la strategie (temps d'attente max 1 seconde)
 							ts.join(1000);
 							
-							// prise en compte eventuelle brulure
+							// prise en compte d'une eventuelle brulure
 							int brulure = personnages.get(refRMI).getElement().getBrulure();
-							if (brulure > 0)	//s'il brule
+							if (brulure > 0)	//si le personnage actuel brule
 							{
 								this.incrementeCaractElement(personnages.get(refRMI), Caracteristique.VIE , -brulure);	//degats de brulure
 								personnages.get(refRMI).getElement().setBrulure(brulure-1);	//decrementation brulure
@@ -711,20 +710,6 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 	}
 	
 	@Override
-	public boolean Clairvoyance(int refRMI, int refRMIAdv) throws RemoteException {
-		boolean res = false;
-		
-		VuePersonnage client = personnages.get(refRMI);
-		VuePersonnage client2 = personnages.get(refRMIAdv);
-		
-			
-		new Clairvoyance(this, client, client2).interagit();
-		personnages.get(refRMI).executeAction();
-		
-		return res;
-	}
-	
-	
 	public boolean AeraOfEffect(int refRMI, HashMap<Integer, Point> refPersoAdv) throws RemoteException {
 		boolean res = false;
 		
@@ -1098,6 +1083,13 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 			logActionDejaExecutee(refRMI);
 			
 		} else {
+			int vitesse = client.getElement().getCaract(Caracteristique.VITESSE);
+			if(vitesse < 1){
+				// Si on est gelé
+				IConsole console = consoleFromRef(refRMI);
+				console.log(Level.INFO, Constantes.nomClasse(this), 
+						"Je suis gelé ");
+			}
 			// sinon, on tente de jouer l'interaction
 			new Deplacement(client, getVoisins(refRMI)).seDirigeVers(refCible);
 			client.executeAction();
@@ -1118,22 +1110,8 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 			// si une action a deja ete executee
 			logActionDejaExecutee(refRMI);
 		} else {
-			int vitesse = client.getElement().getCaract(Caracteristique.VITESSE);
-			if(vitesse < 1){
-				// Si on est gelé
-				IConsole console = consoleFromRef(refRMI);
-				console.log(Level.INFO, Constantes.nomClasse(this), 
-						"Je suis gelé " + nomRaccourciClient(refRMI));
-				vitesse++;
-				client.getElement().getCaracts().put(Caracteristique.VITESSE, vitesse);
-			}
-			// sinon, on se deplace 
-			else{
-				while(vitesse > 0){
-					new Deplacement(client, getVoisins(refRMI)).seDirigeVers(objectif);
-					vitesse--;
-				}
-			}
+			// sinon, on tente de jouer l'interaction
+			new Deplacement(client, getVoisins(refRMI)).seDirigeVers(objectif);
 			client.executeAction();
 
 			res = true;

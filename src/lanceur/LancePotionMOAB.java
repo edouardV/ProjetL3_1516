@@ -10,6 +10,9 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+/*
+ * Lance une potion MOAB (Mother Of All Bombs) tuant tous les personnages
+ */
 public class LancePotionMOAB {
 
 	private static String usage = "USAGE : java " + LancePotionForce.class.getName() + " [ port [ ipArene ] ]";
@@ -47,7 +50,7 @@ public class LancePotionMOAB {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "potion_"+nom+groupe);
+			logger = new LoggerProjet(true, "potion_MOAB_"+nom+groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -57,7 +60,7 @@ public class LancePotionMOAB {
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
 
-			logger.info("Lanceur", "Lancement de la potion sur le serveur...");
+			logger.info("Lanceur", "Lancement de la potion MOAB sur le serveur...");
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
@@ -69,7 +72,7 @@ public class LancePotionMOAB {
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
-			logger.info("Lanceur", "Lancement de la potion reussi");
+			logger.info("Lanceur", "Lancement de la potion MOAB reussi");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

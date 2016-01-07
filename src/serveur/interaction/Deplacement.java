@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
+import serveur.element.Caracteristique;
 import serveur.vuelement.VuePersonnage;
 import utilitaires.Calculs;
 
@@ -76,13 +77,40 @@ public class Deplacement {
 	 * @throws RemoteException
 	 */
 	public void seDirigeVers(Point objectif) throws RemoteException {
+		
 		Point cible = Calculs.restreintPositionArene(objectif); 
+		Point dest;		//point voisin sur lequel se placer
+		int vitesseNormale;	//vitesse par defaut du personnage
+		if (personnage.getElement().getCaract(Caracteristique.TYPE_PERSO)==4)	vitesseNormale = 2;	 //vitesse de l'assassin = 2
+		else vitesseNormale = 1;	//cas generale vitesse = 1
 		
-		// on cherche le point voisin vide
-		Point dest = Calculs.meilleurPoint(personnage.getPosition(), cible, voisins);
-		
-		if(dest != null) {
-			personnage.setPosition(dest);
+		// on ne bouge que si l'element existe et que notre vitesse est strictement positive
+		int vitesse = personnage.getElement().getCaract(Caracteristique.VITESSE);
+		if(vitesse < vitesseNormale)	//si on est gele, on ne se deplace pas (sauf si on est un assassin et qu'on a une vitesse actuelle de 1) mais on incremente la vitesse
+		{	
+			if (vitesse == 1)	//cas de l'assassin a 1 de vitesse
+			{
+				// on cherche le point voisin vide
+				dest = Calculs.meilleurPoint(personnage.getPosition(), cible, voisins);
+				if(dest != null) {
+					personnage.setPosition(dest);
+				}
+			}
+			vitesse++;
+			personnage.getElement().getCaracts().put(Caracteristique.VITESSE, vitesse);
 		}
+		// sinon, on se deplace 
+		else {
+			
+			while(vitesse > 0){
+				// on cherche le point voisin vide
+				dest = Calculs.meilleurPoint(personnage.getPosition(), cible, voisins);
+				if(dest != null) {
+					personnage.setPosition(dest);
+				}
+				vitesse--;	
+			}	
+		}
+		
 	}
 }

@@ -3,6 +3,7 @@ package interfacegraphique.interfacesimple;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -189,9 +190,40 @@ public class AreneJPanel extends JPanel {
 		if(vueElement instanceof VuePersonnage) {
 			g.fillOval(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);	
 		} else {
-			Polygon p = new Polygon(); // triangle
-			p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
-			g.fillPolygon(p);
+			Image pers;
+			String nomPotion = vueElement.getElement().getNom();	//nom de la potion
+			if (nomPotion.equals("Vie"))	//Potion de vie
+			{
+				pers = getToolkit().getImage("images/potionVie.png");
+				g.drawImage(pers, coordX, coordY, this);
+			}
+			else if (nomPotion.equals("Force"))	//Potion de force
+			{
+				pers = getToolkit().getImage("images/potionForce.png");
+				g.drawImage(pers, coordX, coordY, this);
+			}
+			else if (nomPotion.equals("Init"))	//Potion d'initiative
+			{
+				pers = getToolkit().getImage("images/potionInit.png");
+				g.drawImage(pers, coordX, coordY, this);
+			}
+			else if (nomPotion.equals("Freeze"))	//Potion de freeze
+			{
+				pers = getToolkit().getImage("images/potionFreeze.png");
+				g.drawImage(pers, coordX, coordY, this);
+			}
+			else if (nomPotion.equals("MOAB"))	//Potion MOAB
+			{
+				pers = getToolkit().getImage("images/potionMOAB.png");
+				g.drawImage(pers, coordX, coordY, this);
+			}
+			else	//Potion basique
+			{
+				Polygon p = new Polygon(); // triangle
+				p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
+				g.fillPolygon(p);
+			}
+			
 		}
 	}
 

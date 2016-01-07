@@ -255,8 +255,8 @@ public class IHM extends JFrame implements Runnable {
 		menuBar.add(affichageMenu);
 		
 		JMenu PersMenu = new JMenu("Ajouter Pers");
-		// ajout d'une action pour ajouter un personnage aleatoire dans l'arene
-		Action persAction = new AbstractAction("Aleatoire") {
+		// ajout d'une action pour ajouter un Personnage basique dans l'arene
+		Action persAction = new AbstractAction("Personnage") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {
@@ -266,41 +266,8 @@ public class IHM extends JFrame implements Runnable {
 		};
 		PersMenu.add(persAction);
 		
-		// ajout d'une action pour ajouter un personnage archer dans l'arène
-		Action archer = new AbstractAction("Archer") {
-			private static final long serialVersionUID = 1L;
-
-			public void actionPerformed(ActionEvent ae) {
-				String args[] = {Integer.toString(port),ipArene};
-				LancePersonnageArcher.main(args);
-			}
-		};
-		PersMenu.add(archer);
-		
-		// ajout d'une action pour ajouter un personnage Mage de feu dans l'arène
-		Action mageDeFeu = new AbstractAction("Mage de Feu") {
-			private static final long serialVersionUID = 1L;
-
-			public void actionPerformed(ActionEvent ae) {
-				String args[] = {Integer.toString(port),ipArene};
-				LanceMageDeFeu.main(args);
-			}
-		};
-		PersMenu.add(mageDeFeu);
-				
-		// ajout d'une action pour ajouter un personnage assassin dans l'arène
-		Action assassin = new AbstractAction("Assassin") {
-			private static final long serialVersionUID = 1L;
-
-			public void actionPerformed(ActionEvent ae) {
-				String args[] = {Integer.toString(port),ipArene};
-				LancePersonnageAssassin.main(args);
-			}
-		};
-		PersMenu.add(assassin);
-		
-		// ajout d'une action pour ajouter un personnage peureu dans l'ar�ne
-		Action peureu = new AbstractAction("Peureu") {
+		// ajout d'une action pour ajouter un Peureux dans l'arene
+		Action peureuxAction = new AbstractAction("Peureux") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {
@@ -308,10 +275,21 @@ public class IHM extends JFrame implements Runnable {
 				LancePersonnagePeureu.main(args);
 			}
 		};
-		PersMenu.add(peureu);
+		PersMenu.add(peureuxAction);
 		
-		// ajout d'une action pour ajouter un personnage soigneur dans l'ar�ne
-		Action soigneur = new AbstractAction("Soigneur") {
+		// ajout d'une action pour ajouter un Archer dans l'arene
+		Action aoeAction = new AbstractAction("AOE") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnageAOE.main(args);
+			}
+		};
+		PersMenu.add(aoeAction);
+		
+		// ajout d'une action pour ajouter un Soigneur dans l'arene
+		Action soigneurAction = new AbstractAction("Soigneur") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {
@@ -319,13 +297,46 @@ public class IHM extends JFrame implements Runnable {
 				LancePersonnageSoigneur.main(args);
 			}
 		};
-		PersMenu.add(soigneur);		
+		PersMenu.add(soigneurAction);	
+		
+		// ajout d'une action pour ajouter un Assassin dans l'arene
+		Action assassinAction = new AbstractAction("Assassin") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnageAssassin.main(args);
+			}
+		};
+		PersMenu.add(assassinAction);	
+		
+		// ajout d'une action pour ajouter un Archer dans l'arene
+		Action archerAction = new AbstractAction("Archer") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LancePersonnageArcher.main(args);
+			}
+		};
+		PersMenu.add(archerAction);
+		
+		// ajout d'une action pour ajouter un Mage de feu dans l'arene
+		Action mageDeFeuAction = new AbstractAction("Mage de Feu") {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent ae) {
+				String args[] = {Integer.toString(port),ipArene};
+				LanceMageDeFeu.main(args);
+			}
+		};
+		PersMenu.add(mageDeFeuAction);
 		menuBar.add(PersMenu);
 		
 		
 		JMenu PotionMenu = new JMenu("Ajouter Potion");
-		// ajout d'une action pour ajouter une potion al�atoire dans l'ar�ne
-		Action potionAlea = new AbstractAction("Al�atoire") {
+		// ajout d'une action pour ajouter une potion basique dans l'arene
+		Action potionAlea = new AbstractAction("Potion") {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent ae) {

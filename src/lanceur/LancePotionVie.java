@@ -10,6 +10,9 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+/*
+ * Lance une potion modifiant uniquement la vie
+ */
 public class LancePotionVie {
 	
 	private static String usage = "USAGE : java " + LancePotionVie.class.getName() + " [ port [ ipArene ] ]";
@@ -47,7 +50,7 @@ public class LancePotionVie {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "potion_"+nom+groupe);
+			logger = new LoggerProjet(true, "potion_de_vie_"+nom+groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -57,7 +60,7 @@ public class LancePotionVie {
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
 
-			logger.info("Lanceur", "Lancement de la potion sur le serveur...");
+			logger.info("Lanceur", "Lancement de la potion de vie sur le serveur...");
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
@@ -65,10 +68,11 @@ public class LancePotionVie {
 			caractsPotion.put(Caracteristique.VIE, Calculs.valeurCaracAleatoirePosNeg(Caracteristique.VIE));
 			caractsPotion.put(Caracteristique.FORCE,0);
 			caractsPotion.put(Caracteristique.INITIATIVE,0);
+			caractsPotion.put(Caracteristique.VITESSE,0);
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
-			logger.info("Lanceur", "Lancement de la potion reussi");
+			logger.info("Lanceur", "Lancement de la potion de vie reussi");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

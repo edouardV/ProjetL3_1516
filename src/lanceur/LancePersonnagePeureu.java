@@ -12,15 +12,14 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Lance une Console avec un Element sur l'Arene. 
- * A lancer apres le serveur, eventuellement plusieurs fois.
+ * Lance un personnage identique a celui de base, a l'exception qu'il evite les potions
  */
 public class LancePersonnagePeureu {
 	
 	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Peureu";
+		String nom = "Peureux";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G6"; 
@@ -57,7 +56,7 @@ public class LancePersonnagePeureu {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "personnage_" + nom + groupe);
+			logger = new LoggerProjet(true, "peureux_" + nom + groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -67,11 +66,11 @@ public class LancePersonnagePeureu {
 		try {
 			String ipConsole = InetAddress.getLocalHost().getHostAddress();
 			
-			logger.info("Lanceur", "Creation du personnage...");
+			logger.info("Lanceur", "Creation du peureux...");
 			
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
-			// seule la force n'a pas sa valeur par defaut (exemple)
+			// seule la force n'a pas sa valeur par defaut
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
 			/* le type de personnage Peureur */
@@ -80,7 +79,7 @@ public class LancePersonnagePeureu {
 			Point position = Calculs.positionAleatoireArene();
 			
 			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
-			logger.info("Lanceur", "Creation du personnage reussie");
+			logger.info("Lanceur", "Creation du peureux reussie");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

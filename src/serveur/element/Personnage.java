@@ -16,6 +16,11 @@ public class Personnage extends Element {
 	
 	private static final long serialVersionUID = 1L;
 	
+	/* L'attribut brulure
+	 * Permet de savoir si un personnage brule et combien de vie lui enlever
+	 * Un personnage qui brule, perd (par tour) autant de points de vie que le nombre de points de brulure qu'il possede
+	 * Tant qu'il brule on decremente de 1 ses points de brulure a chaque tour
+	 */
 	private int brulure = 0;
 
 	/**

@@ -12,8 +12,8 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Represente un duel entre deux personnages dans lequel l'attaquant a une chance de faire un coup critique au defenseur.
- *
+ * Represente un pouvoir qui brule pendant plusieurs tours un personnage choisi.
+ * A chaque tour les degats diminuent de un point.
  */
 public class Bruler extends Interaction<VuePersonnage> {
 	

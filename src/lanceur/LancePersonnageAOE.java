@@ -12,8 +12,7 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Lance une Console avec un Element sur l'Arene. 
- * A lancer apres le serveur, eventuellement plusieurs fois.
+ * Lance un personnage pouvant attaquer plusieurs personnages a la fois autour de lui sur un faible rayon
  */
 public class LancePersonnageAOE {
 	
@@ -57,7 +56,7 @@ public class LancePersonnageAOE {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "personnage_" + nom + groupe);
+			logger = new LoggerProjet(true, "aoe_" + nom + groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -67,20 +66,20 @@ public class LancePersonnageAOE {
 		try {
 			String ipConsole = InetAddress.getLocalHost().getHostAddress();
 			
-			logger.info("Lanceur", "Creation du personnage...");
+			logger.info("Lanceur", "Creation du personnage aoe...");
 			
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
-			// seule la force n'a pas sa valeur par defaut (exemple)
+			// seule la force n'a pas sa valeur par defaut
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
-			/* le type de personnage archer */
+			/* le type de personnage aoe */
 			caracts.put(Caracteristique.TYPE_PERSO, 2);
 			
 			Point position = Calculs.positionAleatoireArene();
 			
 			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
-			logger.info("Lanceur", "Creation du personnage reussie");
+			logger.info("Lanceur", "Creation du personnage aoe reussie");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

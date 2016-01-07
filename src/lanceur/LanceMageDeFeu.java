@@ -12,8 +12,7 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Lance une Console avec un Element sur l'Arene. 
- * A lancer apres le serveur, eventuellement plusieurs fois.
+ * Lance un personnage sans force mais possedant l'attaque brulure lui permettant d'infliger des degats sur une certaine duree
  */
 public class LanceMageDeFeu {
 	
@@ -74,7 +73,7 @@ public class LanceMageDeFeu {
 			caracts.put(Caracteristique.VIE, 100);
 			caracts.put(Caracteristique.FORCE, 0); 
 			caracts.put(Caracteristique.INITIATIVE, 80); 
-			/*caracts.put(Caracteristique.VITESSE, 1);*/
+			caracts.put(Caracteristique.VITESSE, 1);
 			caracts.put(Caracteristique.TYPE_PERSO, 6);
 			
 			Point position = Calculs.positionAleatoireArene();

@@ -7,6 +7,9 @@ import serveur.Arene;
 import serveur.element.Caracteristique;
 import serveur.vuelement.VuePersonnage;
 
+/*
+ * Represente un pouvoir rendant 50 points de vie.
+ */
 public class Soigner extends Interaction<VuePersonnage> {
 
 	public Soigner(Arene arene, VuePersonnage attaquant, VuePersonnage defenseur) {

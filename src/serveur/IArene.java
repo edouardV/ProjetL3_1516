@@ -251,8 +251,6 @@ public interface IArene extends Remote {
 	 * @throws RemoteException
 	 */
 	public void lancePotion(Potion potion, Point position, String motDePasse) throws RemoteException;
-
-	boolean Clairvoyance(int refRMI, int refRMIAdv) throws RemoteException;
 	
 }
 
